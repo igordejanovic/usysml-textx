@@ -1,0 +1,23 @@
+site_name: usysml-text
+
+site_description: A subset of SysML v2 spec implemented in textX
+site_author: Vladimir Likić, Igor Dejanović
+
+repo_url: https://github.com/igordejanovic/textX
+theme: readthedocs
+extra_css: [style.css, css/version-select.css]
+
+nav:
+- Home: index.md
+- About:
+  - License: https://github.com/igordejanovic/usysml-textx/blob/main/LICENSE.txt
+
+markdown_extensions:
+- admonition:
+- toc:
+    permalink: true
+
+copyright: Copyright &copy; uSysML-textX contributors.
+
+extra_javascript:
+- js/version-select.js

@@ -1,0 +1,64 @@
+/* uSysML -- textX grammar to mimic a small subset of SysML v2
+*/
+
+uSysML:
+    types*=uSysMLType
+    elements*=Element
+;
+
+uSysMLType:
+    'type' name=ID
+;
+
+Element:
+    Package | PartDef | Part | AttributeDef | Attribute | RedefinedPart
+;
+
+OwnedElement:
+    Package | PartDef | Part | AttributeDef | Attribute | RedefinedPart
+;
+
+Package:
+   'package' name=ID (
+    ';' | ( '{' elements*=OwnedElement '}' )
+    )
+;
+
+PartDef:
+    'part' 'def' name=ID (
+    ';' | ( '{' elements*=OwnedElement '}' )
+    )
+;
+
+// ? means 'optional'
+Part:
+    'part' name=ID
+        ( ':' type=[PartDef|ID|^elements] )? mult=Multiplicity?
+        (';' | '{' elements*=OwnedElement '}' )
+;
+
+Multiplicity:
+    '[' lower_bound=INT ('..' upper_bound=INT)? ']'
+;
+
+RedefinedPart:
+    'part' 'redefines' type=[Part|ID|^elements] ';'
+;
+
+AttributeDef:
+    'attribute' 'def' name=ID (
+    ';' | ( '{' elements*=OwnedAttributeElement '}' )
+    )
+;
+
+OwnedAttributeElement:
+    Attribute
+;
+
+Attribute:
+    'attribute' name=ID ':' ( type=[uSysMLType] | type=[AttributeDef|ID|^elements] ) ';'
+;
+
+Comment:
+    /\/\/.*$/
+;
