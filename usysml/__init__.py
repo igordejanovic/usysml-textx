@@ -37,6 +37,8 @@ def generator_callback(model, output_file):
     """
 
     def elem_fqn(elem):
+        if elem is None:
+            return 'None'
         names = []
         while hasattr(elem, 'parent'):
             if hasattr(elem, 'name'):

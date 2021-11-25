@@ -7,11 +7,11 @@ Root.PackageVehicles [Package]
  Root.PackageVehicles.Cylinder [PartDef]
  Root.PackageVehicles.Engine [PartDef]
  Root.PackageVehicles.partnotype1 [Part]
-    type=Root.
+    type=None
  Root.PackageVehicles.vehicle [Part]
     type=Root.PackageVehicles.Vehicle
   Root.PackageVehicles.vehicle.partnotype2 [Part]
-      type=Root.
+      type=None
   Root.PackageVehicles.vehicle.chs [Part]
       type=Root.PackageVehicles.ChassisAssembly
    Root.PackageVehicles.vehicle.chs.rb [Part]
