@@ -6,6 +6,6 @@ package PackageVehicles {
 
     // a generic vehicle model
     part vehicle:Vehicle {
-        part w:Wheel[4]; // works
+        part w:Wheel[4];
     }
 }
