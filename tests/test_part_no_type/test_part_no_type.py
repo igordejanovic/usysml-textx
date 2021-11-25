@@ -14,4 +14,8 @@ def test_part_no_type():
 
     e = model.elements[0].elements[7]
     assert e.name == 'partnotype1'
-    ## assert that e type is None ?
+    assert e.type is None
+
+    e = model.elements[0].elements[-1].elements[0]
+    assert e.name == 'partnotype2'
+    assert e.type is None
