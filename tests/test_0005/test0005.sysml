@@ -2,13 +2,24 @@ package PackageVehicles {
 
     part def Vehicle;
     part def Wheel;
-    part vehicle_shed;
+    part def WheelAxle;
 
-    part vehicle_repair_shop {
-        part def VehicleLift;
-    }
+    part test_vehicle:Vehicle;
 
     part vehicle:Vehicle {
-        part w:Wheel[4];
+        part a:WheelAxle[2];
+        part w:Wheel[4] {
+            part def LugBolt;
+        }
+    }
+}
+
+package SupportComponents {
+
+    part parking_space;
+    part vehicle_shed[4];
+
+    part repair_shop[2] {
+        part def VehicleLift;
     }
 }
