@@ -4,10 +4,10 @@ from textx import metamodel_for_language
 this_folder = os.path.dirname(__file__)
 
 
-def test_base_structure():
+def test_0002():
     mm = metamodel_for_language('usysml')
     model = mm.model_from_file(os.path.join(this_folder,
-                                            'test0001.sysml'))
+                                            'test0002.sysml'))
 
     assert model.elements[0].name == 'PackageVehicles'
     assert type(model.elements[0]).__name__ == 'Package'
