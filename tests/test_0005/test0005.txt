@@ -1,0 +1,13 @@
+Root.PackageVehicles [Package]
+ Root.PackageVehicles.Vehicle [PartDef]
+ Root.PackageVehicles.Wheel [PartDef]
+ Root.PackageVehicles.vehicle_shed [Part]
+    type=None
+ Root.PackageVehicles.vehicle_repair_shop [Part]
+    type=None
+  Root.PackageVehicles.vehicle_repair_shop.VehicleLift [PartDef]
+ Root.PackageVehicles.vehicle [Part]
+    type=Root.PackageVehicles.Vehicle
+  Root.PackageVehicles.vehicle.w [Part]
+      multiplicity=4
+      type=Root.PackageVehicles.Wheel
