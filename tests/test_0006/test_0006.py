@@ -7,11 +7,12 @@ this_folder = os.path.dirname(__file__)
 def test_usysml():
     mm = metamodel_for_language('usysml')
     model = mm.model_from_file(os.path.join(this_folder,
-                                            'test0005.sysml'))
+                                            'test0006.sysml'))
 
     assert model.elements[0].name == 'PackageVehicles'
     assert type(model.elements[0]).__name__ == 'Package'
+ 
+    w = model.elements[0].elements[2].elements[1]
 
-    e = model.elements[0].elements[1]
-    assert e.name == 'Wheel'
-    assert type(e).__name__ == 'PartDef'
+    # Assert that Wheel referenced by w is from the inner package
+    assert w.type is model.elements[0].elements[2].elements[0]
