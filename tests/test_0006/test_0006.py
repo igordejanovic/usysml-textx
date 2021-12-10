@@ -1,5 +1,6 @@
 import os
 from textx import metamodel_for_language
+from usysml.utils import get_element_by_name
 
 this_folder = os.path.dirname(__file__)
 
@@ -9,10 +10,9 @@ def test_usysml():
     model = mm.model_from_file(os.path.join(this_folder,
                                             'test0006.sysml'))
 
-    assert model.elements[0].name == 'PackageVehicles'
+    e = get_element_by_name(model, 'PackageVehicles')
     assert type(model.elements[0]).__name__ == 'Package'
  
-    w = model.elements[0].elements[2].elements[1]
-
-    # Assert that Wheel referenced by w is from the inner package
-    assert w.type is model.elements[0].elements[2].elements[0]
+    #w = model.elements[0].elements[2].elements[1]
+    e = get_element_by_name(model, 'w')
+    assert e.type is model.elements[0].elements[2].elements[0]
