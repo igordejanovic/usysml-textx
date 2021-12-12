@@ -13,8 +13,8 @@ def test_usysml():
     e = get_element_by_name(model, 'PackageVehicles')
     assert type(e).__name__ == 'Package'
 
-    e = get_element_by_name(model, 'partnotype1')
+    e = get_element_by_name(model, 'PackageVehicles.partnotype1')
     assert e.type is None
 
-    e = get_element_by_name(model, 'partnotype2')
+    e = get_element_by_name(model, 'PackageVehicles.vehicle.partnotype2')
     assert e.type is None
