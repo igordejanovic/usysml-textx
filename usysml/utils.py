@@ -20,3 +20,22 @@ def get_element_by_name(model, name):
             raise Exception(f'Multiple elements with name "{name}"')
 
         return elements[0]
+
+
+def elem_fqn(elem):
+    """
+    For the given model element returns its FQN.
+    """
+    if elem is None:
+        return 'None'
+
+    if not hasattr(elem, 'parent'):
+        # Top level element is Root
+        return 'Root'
+
+    names = []
+    while hasattr(elem, 'parent'):
+        if hasattr(elem, 'name'):
+            names.append(elem.name)
+        elem = elem.parent
+    return 'Root.{}'.format('.'.join(reversed(names)))

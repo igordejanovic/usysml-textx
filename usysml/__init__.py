@@ -2,6 +2,7 @@ import os
 from functools import partial
 from textx import language, metamodel_from_file
 from textx.generators import generator, gen_file, get_output_filename
+from usysml.utils import elem_fqn
 
 __version__ = "0.1.0.dev"
 
@@ -36,16 +37,6 @@ def generator_callback(model, output_file):
     A generator function that produce output_file from model.
     """
 
-    def elem_fqn(elem):
-        if elem is None:
-            return 'None'
-        names = []
-        while hasattr(elem, 'parent'):
-            if hasattr(elem, 'name'):
-                names.append(elem.name)
-            elem = elem.parent
-        return 'Root.{}'.format('.'.join(reversed(names)))
-
     def write_elements(output_file, owner, indent=0):
         for elem in owner.elements:
             write_element(output_file, elem, indent)
@@ -70,5 +61,84 @@ def generator_callback(model, output_file):
         if hasattr(elem, 'elements'):
             write_elements(output_file, elem, indent)
 
-    with open(output_file, 'w') as output_file:
+    with open(output_file, 'w', encoding='utf-8') as output_file:
         write_elements(output_file, model)
+
+
+@generator('usysml', 'dot')
+def usysml_generate_dot(metamodel, model, output_path, overwrite, debug, **custom_args):
+    "Generator for producing graphical dot file of the model structure."
+
+    output_file = get_output_filename(model._tx_filename, output_path, 'dot')
+    gen_file(model._tx_filename, output_file,
+             partial(dot_generator_callback, model, output_file),
+             overwrite,
+             success_message='Successfuly generated file "{}"'
+             .format(os.path.basename(output_file)))
+
+
+def dot_generator_callback(model, output_file):
+    """
+    Generates dot visualizing the structure of the given model.
+    """
+    ranks = {}
+    with open(output_file, 'w', encoding='utf-8') as output_file:
+        def write_elements(owner):
+            for elem in owner.elements:
+                write_element(elem_fqn_dot(owner), elem)
+
+        def write_element(owner, elem):
+            fqn = elem_fqn_dot(elem)
+            rank = elem_rank(elem)
+
+            mult = ""
+            if hasattr(elem, 'mult') and elem.mult:
+                mult = "{}{}".format(elem.mult.lower_bound,
+                                    '..{}'.format(elem.mult.upper_bound)
+                                    if elem.mult and elem.mult.upper_bound else '')
+            output_file.write('{} [label="{}: {}"]\n'.format(fqn, elem.name,
+                                                             elem._tx_fqn.split('.')[-1]))
+            output_file.write('{} -> {} [{}]\n'.format(
+                owner, fqn, ', {}'.format(mult) if mult else ''))
+            if hasattr(elem, 'type'):
+                output_file.write('{} -> {} [style=dashed, headlabel="type"]\n'
+                                  .format(fqn, elem_fqn_dot(elem.type)))
+
+            if hasattr(elem, 'elements'):
+                write_elements(elem)
+
+            ranks.setdefault(rank, set()).add(elem)
+
+        output_file.write(DOT_HEADER)
+        write_elements(model)
+        for rank in ranks.values():
+            output_file.write(
+                '{{rank=same; {}}}\n'
+                .format(', '.join([elem_fqn_dot(e) for e in rank])))
+
+        output_file.write('\n}\n')
+
+
+def elem_fqn_dot(elem):
+    return elem_fqn(elem).replace('.', '__')
+
+
+def elem_rank(elem):
+    rank = 0
+    while hasattr(elem, 'parent'):
+        elem = elem.parent
+        rank += 1
+    return rank
+
+
+DOT_HEADER = r'''
+digraph uSysML {
+    fontname = "Bitstream Vera Sans"
+    fontsize = 8
+    node[
+        shape=box
+    ]
+    nodesep = 0.7
+    edge[dir=black,arrowtail=empty]
+
+'''
