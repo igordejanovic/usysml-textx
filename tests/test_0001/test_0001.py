@@ -15,6 +15,7 @@ def test_usysml():
     assert_element_name(model, 'PackageVehicles.Vehicle', 'PartDef')
     assert_element_name(model, 'PackageVehicles.Wheel', 'PartDef')
     assert_element_name(model, 'PackageVehicles.vehicle', 'Part')
+    assert_element_name(model, 'PackageVehicles.vehicle.w', 'Part')
 
     assert_element_type(model, 'PackageVehicles.vehicle.w',
                         'PackageVehicles.Wheel')

@@ -1,17 +1,24 @@
 import os
 from textx import metamodel_for_language
 from usysml.utils import get_element_by_name
+from usysml.utils import assert_element_name, assert_element_type
 
-this_folder = os.path.dirname(__file__)
+test_case = os.path.dirname(__file__)
 
 
 def test_usysml():
     mm = metamodel_for_language('usysml')
-    model = mm.model_from_file(os.path.join(this_folder,
+    model = mm.model_from_file(os.path.join(test_case,
                                             'test0002.sysml'))
 
-    e = get_element_by_name(model, 'PackageVehicles')
-    assert type(e).__name__ == 'Package'
+    assert_element_name(model, 'PackageVehicles', 'Package')
+    assert_element_name(model, 'PackageVehicles.Vehicle', 'PartDef')
+    assert_element_name(model, 'PackageVehicles.Wheel', 'PartDef')
+    assert_element_name(model, 'PackageVehicles.vehicle', 'Part')
+    assert_element_name(model, 'PackageVehicles.vehicle.w', 'Part')
+    assert_element_name(model, 'PackageStations', 'Package')
+    assert_element_name(model, 'PackageStations.VehicleStation', 'PartDef')
 
-    e = get_element_by_name(model, 'Wheel')
-    assert type(e).__name__ == 'PartDef'
+    assert_element_type(model, 'PackageVehicles.vehicle.w',
+                        'PackageVehicles.Wheel')
+
