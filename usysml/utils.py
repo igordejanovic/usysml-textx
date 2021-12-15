@@ -11,7 +11,7 @@ def assert_element_type(model, elem_fqn, elem_type_fqn):
     assert e.type is e1
 
 
-def assert_element_name(model, elem_fqn, classfr):
+def assert_element_classfr(model, elem_fqn, classfr):
     """Asserts that the parent classifier of element 'elem_fqn' is 'classfr'
     """
 
