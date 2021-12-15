@@ -2,6 +2,23 @@ from textx import get_children
 from textx.scoping.rrel import find
 
 
+def assert_element_type(model, elem_fqn, elem_type_fqn):
+    """Asserts that the element 'elem_fqn' is of type 'elem_type_fqn'
+    """
+
+    e1 = get_element_by_name(model, elem_type_fqn)
+    e = get_element_by_name(model, elem_fqn)
+    assert e.type is e1
+
+
+def assert_element_name(model, elem_fqn, classfr):
+    """Asserts that the parent classifier of element 'elem_fqn' is 'classfr'
+    """
+
+    e = get_element_by_name(model, elem_fqn)
+    assert type(e).__name__ == classfr
+
+
 def get_element_by_name(model, name):
     """Returns model element by the provided name. Name can be a simple name or a
     Fully Qualified Name (FQN) separated by a dot.
