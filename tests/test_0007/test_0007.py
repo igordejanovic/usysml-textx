@@ -1,18 +1,21 @@
 import os
 from textx import metamodel_for_language
+from usysml.utils import get_element_by_name
+from usysml.utils import assert_element_classfr, assert_element_type
 
-this_folder = os.path.dirname(__file__)
+test_case = os.path.dirname(__file__)
 
 
 def test_usysml():
     mm = metamodel_for_language('usysml')
-    model = mm.model_from_file(os.path.join(this_folder,
+    model = mm.model_from_file(os.path.join(test_case,
                                             'test0007.sysml'))
 
-    assert model.elements[0].name == 'PackageVehicles'
-    assert type(model.elements[0]).__name__ == 'Package'
- 
-    w = model.elements[0].elements[2].elements[0]
+    assert_element_classfr(model, 'PackageVehicles', 'Package')
+    assert_element_classfr(model, 'PackageVehicles.Vehicle', 'PartDef')
+    assert_element_classfr(model, 'PackageVehicles.Wheel', 'PartDef')
+    assert_element_classfr(model, 'PackageVehicles.vehicle', 'Part')
+    assert_element_classfr(model, 'PackageVehicles.vehicle.w', 'Part')
 
-    # assert that Wheel referenced by w is from the owning package
-    assert w.type is model.elements[0].elements[1]
+    assert_element_type(model, 'PackageVehicles.vehicle.w',
+                        'PackageVehicles.Wheel')
