@@ -1,0 +1,8 @@
+Root.PackageVehicles [Package]
+ Root.PackageVehicles.Vehicle [PartDef]
+ Root.PackageVehicles.Wheel [PartDef]
+ Root.PackageVehicles.vehicle [Part]
+    type=Root.PackageVehicles.Vehicle
+  Root.PackageVehicles.vehicle.w [Part]
+      multiplicity=4
+      type=Root.PackageVehicles.Wheel
