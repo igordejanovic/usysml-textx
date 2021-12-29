@@ -1,6 +1,5 @@
 import os
 from textx import metamodel_for_language
-from usysml.utils import get_element_by_name
 from usysml.utils import assert_element_classfr, assert_element_type
 
 test_case = os.path.dirname(__file__)

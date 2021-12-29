@@ -1,6 +1,5 @@
 import os
 from textx import metamodel_for_language
-from usysml.utils import get_element_by_name
 from usysml.utils import assert_element_classfr, assert_element_type
 
 test_case = os.path.dirname(__file__)
@@ -25,7 +24,7 @@ def test_usysml():
     assert_element_classfr(model, 'SupportComponents.vehicle_shed', 'Part')
     assert_element_classfr(model, 'SupportComponents.repair_shop', 'Part')
     assert_element_classfr(model, 'SupportComponents.repair_shop.VehicleLift',
-                        'PartDef')
+                           'PartDef')
 
     assert_element_type(model, 'PackageVehicles.test_vehicle',
                         'PackageVehicles.Vehicle')
