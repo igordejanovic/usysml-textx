@@ -9,16 +9,13 @@ test_case = os.path.dirname(__file__)
 def test_usysml():
     mm = metamodel_for_language('usysml')
     model = mm.model_from_file(os.path.join(test_case,
-                                            'test0004.sysml'))
+                                            'test_02-001.sysml'))
 
     assert_element_classfr(model, 'PackageVehicles', 'Package')
     assert_element_classfr(model, 'PackageVehicles.Vehicle', 'PartDef')
     assert_element_classfr(model, 'PackageVehicles.Wheel', 'PartDef')
     assert_element_classfr(model, 'PackageVehicles.vehicle', 'Part')
-    assert_element_classfr(model, 'PackageVehicles.vehicle.c', 'Part')
     assert_element_classfr(model, 'PackageVehicles.vehicle.w', 'Part')
 
     assert_element_type(model, 'PackageVehicles.vehicle.w',
                         'PackageVehicles.Wheel')
-    assert_element_type(model, 'PackageVehicles.vehicle.c',
-                        'None')

@@ -1,0 +1,1 @@
+/home/likicv/usysml-test-cases/usysml-test-cases/test_cases/test_02-001/test_02-001.sysml
