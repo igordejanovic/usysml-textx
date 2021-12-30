@@ -57,6 +57,13 @@ demonstrate language features and corner cases. You can run tests from the tests
 folder by:
 
         py.test
+        
+## Running tests on usysml-test-cases inputs
+
+This project provides tests for `.sysml` files from `usysml-test-cases` projects.
+
+To run set environment variable `USYSML_TEST_CASES` to the folder of the `usysml-test-cases` before running tests.
+
 
 # Credits
 
