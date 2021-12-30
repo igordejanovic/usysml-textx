@@ -26,43 +26,49 @@ def usysml_generate_text(metamodel, model, output_path, overwrite, debug, **cust
 
     output_file = get_output_filename(model._tx_filename, output_path, 'txt')
     gen_file(model._tx_filename, output_file,
-             partial(generator_callback, model, output_file),
+             partial(text_generator_callback, model, output_file),
              overwrite,
              success_message='Successfuly generated file "{}"'
              .format(os.path.basename(output_file)))
 
 
-def generator_callback(model, output_file):
+def text_generator_callback(model, output_file):
     """
     A generator function that produce output_file from model.
     """
 
-    def write_elements(output_file, owner, indent=0):
-        for elem in owner.elements:
-            write_element(output_file, elem, indent)
+    with open(output_file, 'w', encoding='utf-8') as output_file:
+        output_file.write(generator_text_str(model))
 
-    def write_element(output_file, elem, indent):
-        output_file.write('{}{} [{}]\n'
-                          .format(' ' * indent,
-                                  elem_fqn(elem),
-                                  elem._tx_fqn.split('.')[-1]))
+
+def generator_text_str(model):
+    output = []
+
+    def write_elements(owner, indent=0):
+        for elem in owner.elements:
+            write_element(elem, indent)
+
+    def write_element(elem, indent):
+        output.append('{}{} [{}]'
+                      .format(' ' * indent,
+                              elem_fqn(elem),
+                              elem._tx_fqn.split('.')[-1]))
         indent += 1
         ind_str = '  ' * indent
         if hasattr(elem, 'mult') and elem.mult:
-            output_file.write('{}multiplicity={}{}\n'
-                              .format(ind_str,
-                                      elem.mult.lower_bound,
-                                      '-{}'.format(elem.mult.upper_bound)
-                                      if elem.mult and elem.mult.upper_bound else ''))
+            output.append('{}multiplicity={}{}'
+                          .format(ind_str,
+                                  elem.mult.lower_bound,
+                                  '-{}'.format(elem.mult.upper_bound)
+                                  if elem.mult and elem.mult.upper_bound else ''))
         if hasattr(elem, 'type'):
-            output_file.write('{}type={}\n'.format(ind_str, elem_fqn(elem.type)))
-        # if hasattr(elem, 'parent'):
-        #     output_file.write('{}parent={}\n'.format(ind_str, elem_fqn(elem.parent)))
+            output.append('{}type={}'.format(ind_str, elem_fqn(elem.type)))
         if hasattr(elem, 'elements'):
-            write_elements(output_file, elem, indent)
+            write_elements(elem, indent)
 
-    with open(output_file, 'w', encoding='utf-8') as output_file:
-        write_elements(output_file, model)
+    write_elements(model)
+    output.append('')
+    return '\n'.join(output)
 
 
 @generator('usysml', 'dot')
