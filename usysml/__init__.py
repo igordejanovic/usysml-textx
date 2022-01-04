@@ -3,6 +3,7 @@ from functools import partial
 from textx import language, metamodel_from_file
 from textx.generators import generator, gen_file, get_output_filename
 from usysml.utils import elem_fqn
+from .semantics import check_namespace_unique_name
 
 __version__ = "0.1.0.dev"
 
@@ -12,6 +13,15 @@ def usysml_language():
     "uSysML language"
     current_dir = os.path.dirname(__file__)
     mm = metamodel_from_file(os.path.join(current_dir, 'usysml.tx'))
+
+    obj_processors = {
+        'uSysML': check_namespace_unique_name,
+        'Package': check_namespace_unique_name,
+        'Part': check_namespace_unique_name,
+        'PartDef': check_namespace_unique_name,
+        'AttributeDef': check_namespace_unique_name,
+    }
+    mm.register_obj_processors(obj_processors)
 
     # Here if necessary register object processors or scope providers
     # http://textx.github.io/textX/stable/metamodel/#object-processors
