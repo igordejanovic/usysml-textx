@@ -13,6 +13,18 @@ import pytest
 from usysml import generator_text_str
 from textx import metamodel_for_language, TextXError
 
+SKIP_TESTS = [
+    'test_02-002',
+]
+
+
+def is_skip(filename):
+    for t in SKIP_TESTS:
+        if t in filename:
+            return True
+    return False
+
+
 sysml_mm = metamodel_for_language('usysml')
 
 USYSML_TEST_CASES = os.getenv('USYSML_TEST_CASES')
@@ -37,6 +49,8 @@ def test_success(sysml_file, update):
             f.write(generator_text_str(
                 sysml_mm.model_from_file(sysml_file)))
     else:
+        if is_skip(sysml_file):
+            pytest.skip('Not implemented yet.')
         with open(output_file, 'r', encoding='utf-8') as f:
             output = generator_text_str(
                 sysml_mm.model_from_file(sysml_file))
@@ -47,6 +61,9 @@ def test_success(sysml_file, update):
 def test_failure(sysml_file, update):
     if update:
         pytest.skip('Not updating error tests cases.')
+
+    if is_skip(sysml_file):
+        pytest.skip('Not implemented yet.')
 
     with pytest.raises(TextXError):
         sysml_mm.model_from_file(sysml_file)
