@@ -65,6 +65,13 @@ This project provides tests for `.sysml` files from `usysml-test-cases` projects
 To run set environment variable `USYSML_TEST_CASES` to the folder of the `usysml-test-cases` before running tests.
 
 
+## Updating usysml-test-cases outputs
+
+To automatically update all test cases outputs to match what is expected run `py.test` with `--update-outputs` switch.
+
+        py.test tests --update-outputs
+
+
 # Credits
 
 Initial project layout generated with `textx startproject`.
