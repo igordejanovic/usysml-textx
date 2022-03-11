@@ -7,7 +7,7 @@ uSysML:
 ;
 
 uSysMLType:
-    'type' name=ID
+    'type' name=Name
 ;
 
 Element:
@@ -19,21 +19,21 @@ OwnedElement:
 ;
 
 Package:
-   'package' name=ID (
+   'package' name=Name (
     ';' | ( '{' elements*=OwnedElement '}' )
     )
 ;
 
 PartDef:
-    'part' 'def' name=ID (
+    'part' 'def' name=Name (
     ';' | ( '{' elements*=OwnedElement '}' )
     )
 ;
 
 // ? means 'optional'
 Part:
-    'part' name=ID
-        ( ':' type=[PartDef|ID|^elements] )? mult=Multiplicity?
+    'part' name=Name
+        ( ':' type=[PartDef|Name|^elements] )? mult=Multiplicity?
         (';' | '{' elements*=OwnedElement '}' )
 ;
 
@@ -42,11 +42,11 @@ Multiplicity:
 ;
 
 RedefinedPart:
-    'part' 'redefines' type=[Part|ID|^elements] ';'
+    'part' 'redefines' type=[Part|Name|^elements] ';'
 ;
 
 AttributeDef:
-    'attribute' 'def' name=ID (
+    'attribute' 'def' name=Name (
     ';' | ( '{' elements*=OwnedAttributeElement '}' )
     )
 ;
@@ -56,8 +56,17 @@ OwnedAttributeElement:
 ;
 
 Attribute:
-    'attribute' name=ID ':' ( type=[uSysMLType] | type=[AttributeDef|ID|^elements] ) ';'
+    'attribute' name=Name ':' ( type=[uSysMLType] | type=[AttributeDef|Name|^elements] ) ';'
 ;
+
+Name:
+    BaseName | UnrestrictedName
+;
+
+BaseName: !Keyword ID;
+Keyword: /\b(package|type|attribute|part|def|redefines)\b/;
+
+UnrestrictedName[noskipws]: /\s*'/- /(\\'|\\"|\\b|\\f|\\t|\\n|\\\\|[^'])+/ '\''-;
 
 Comment:
     /\/\/.*$/

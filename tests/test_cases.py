@@ -14,7 +14,7 @@ from usysml import generator_text_str
 from textx import metamodel_for_language, TextXError
 
 SKIP_TESTS = [
-    'test_02-002',
+#    'test_02-002',
 ]
 
 

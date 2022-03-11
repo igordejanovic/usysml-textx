@@ -1,4 +1,5 @@
 from textx import get_children
+from textx.lang import ID
 from textx.scoping.rrel import find
 
 
@@ -53,6 +54,9 @@ def elem_fqn(elem):
     names = []
     while hasattr(elem, 'parent'):
         if hasattr(elem, 'name'):
-            names.append(elem.name)
+            if ID.regex.match(elem.name).group() == elem.name:
+                names.append(elem.name)
+            else:
+                names.append(f"'{elem.name}'")
         elem = elem.parent
     return 'Root.{}'.format('.'.join(reversed(names)))
