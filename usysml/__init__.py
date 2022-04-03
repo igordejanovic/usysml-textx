@@ -72,7 +72,7 @@ def generator_text_str(model):
                                   '-{}'.format(elem.mult.upper_bound)
                                   if elem.mult and elem.mult.upper_bound else ''))
         if hasattr(elem, 'type'):
-            output.append('{}type={}'.format(ind_str, elem_fqn(elem.type)))
+            output.append('{}typed by={}'.format(ind_str, elem_fqn(elem.type)))
         if hasattr(elem, 'elements'):
             write_elements(elem, indent)
 

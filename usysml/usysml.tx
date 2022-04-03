@@ -11,11 +11,11 @@ uSysMLType:
 ;
 
 Element:
-    Package | PartDef | Part | AttributeDef | Attribute | RedefinedPart
+    Package | PartDef | PartUsage | AttributeDef | AttributeUsage | RedefinedPart
 ;
 
 OwnedElement:
-    Package | PartDef | Part | AttributeDef | Attribute | RedefinedPart
+    Package | PartDef | PartUsage | AttributeDef | AttributeUsage | RedefinedPart
 ;
 
 Package:
@@ -31,7 +31,7 @@ PartDef:
 ;
 
 // ? means 'optional'
-Part:
+PartUsage:
     'part' name=Name
         ( ':' type=[PartDef|Name|^elements] )? mult=Multiplicity?
         (';' | '{' elements*=OwnedElement '}' )
@@ -42,7 +42,7 @@ Multiplicity:
 ;
 
 RedefinedPart:
-    'part' 'redefines' type=[Part|Name|^elements] ';'
+    'part' 'redefines' type=[PartUsage|Name|^elements] ';'
 ;
 
 AttributeDef:
@@ -52,12 +52,15 @@ AttributeDef:
 ;
 
 OwnedAttributeElement:
-    Attribute
+    AttributeUsage
 ;
 
-Attribute:
-    'attribute' name=Name ':' ( type=[uSysMLType] | type=[AttributeDef|Name|^elements] ) ';'
+AttributeUsage:
+    'attribute' name=Name ':' ( type=[AttributeType|Name|^elements] ) ';'
 ;
+
+AttributeType:
+    uSysMLType | AttributeDef;
 
 Name:
     BaseName | UnrestrictedName
